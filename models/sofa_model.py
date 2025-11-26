@@ -1,0 +1,71 @@
+from enum import Enum
+from typing import Optional
+from pydantic import Field, BaseModel
+
+class ProductType(str, Enum):
+    desk = "office desk"
+    chair = "office chair"
+    cabinet = "file cabinet"
+    bookshelf = "bookshelf"
+    reception_counter = "reception counter"
+    waiting_area_sofa = "waiting area sofa"
+
+class UserType(str, Enum):
+    manager = "manager"
+    employee = "employee"
+    guest = "guest"
+
+class Style(str, Enum):
+    modern = "modern"
+    classic = "classic"
+    minimal = "minimal"
+    industrial = "industrial"
+
+class Color(str, Enum):
+    black = "black"
+    white = "white"
+    gray = "gray"
+    brown = "brown"
+    cream = "cream"
+
+class FabricMaterial(str, Enum):
+    leather = "leather"
+    linen = "linen"
+    unknown = ""
+
+class BodyMaterial(str, Enum):
+    wood = "wood"
+    aluminum = "aluminum"
+    unknown = ""
+
+class OfficeProductModel(BaseModel):
+    id: int
+    number_of_person: int
+    budget: int
+    style: Style
+    color: Color
+    fabric_material: Optional[FabricMaterial] = FabricMaterial.unknown
+    body_material: Optional[BodyMaterial] = BodyMaterial.unknown
+
+class OfficeProductEntry(BaseModel):
+    id: int
+    productType: ProductType
+    person: UserType
+    number_of_person: int
+    budget: int
+    style: Style
+    color: Color
+    fabric_material: Optional[FabricMaterial] = FabricMaterial.unknown
+    body_material: Optional[BodyMaterial] = BodyMaterial.unknown
+
+class UserRequest(BaseModel):
+    person: UserType = Field(..., description="Who is the furniture for (manager/employee/guest)")
+    productType: ProductType = Field(..., description="Type of product wanted")
+    number_of_person: int = Field(..., description="Seating capacity needed (1,2,3,...)")
+    budget: Optional[int] = Field(None, description="Exact budget available")
+    budget_min: Optional[int] = Field(None, description="Minimum budget if range selected")
+    budget_max: Optional[int] = Field(None, description="Maximum budget if range selected")
+    style: Optional[Style] = Field(None, description="Preferred design style")
+    color: Optional[Color] = Field(None, description="Preferred color")
+    fabric_material: Optional[FabricMaterial] = Field(None, description="Preferred upholstery material, if relevant")
+    body_material: Optional[BodyMaterial] = Field(None, description="Preferred body/frame material")
