@@ -1,0 +1,106 @@
+{% load static %}
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>پیشنهاد مبلمان اداری</title>
+    <link rel="stylesheet" href="{% static 'recommendations/app.css' %}">
+</head>
+<body>
+<main class="page-shell">
+    <header class="hero">
+        <p class="eyebrow">سیستم پیشنهاد هوشمند</p>
+        <h1>مبلمان مناسب فضای کاری خود را پیدا کنید</h1>
+        <p>نیازتان را مشخص کنید تا نزدیک‌ترین محصولات موجود، بر اساس امتیاز تطابق مرتب شوند.</p>
+    </header>
+
+    <section class="layout">
+        <form id="recommendation-form" class="panel" novalidate>
+            <h2>نیازهای شما</h2>
+            <div class="form-grid">
+                <label>برای چه کسی؟
+                    <select name="person" required>
+                        <option value="manager">مدیر</option>
+                        <option value="employee">کارمند</option>
+                        <option value="guest">مهمان</option>
+                    </select>
+                </label>
+                <label>نوع محصول
+                    <select name="productType" required>
+                        <option value="office desk">میز اداری</option>
+                        <option value="office chair">صندلی اداری</option>
+                        <option value="file cabinet">فایلینگ</option>
+                        <option value="bookshelf">کتابخانه</option>
+                        <option value="reception counter">کانتر پذیرش</option>
+                        <option value="waiting area sofa">مبل انتظار</option>
+                    </select>
+                </label>
+                <label>ظرفیت
+                    <input name="number_of_person" type="number" min="1" value="1" required>
+                </label>
+                <label>بودجه دقیق (تومان)
+                    <input name="budget" type="number" min="0" placeholder="مثلاً 15000000">
+                </label>
+                <label>حداقل بودجه
+                    <input name="budget_min" type="number" min="0">
+                </label>
+                <label>حداکثر بودجه
+                    <input name="budget_max" type="number" min="0">
+                </label>
+                <label>سبک
+                    <select name="style">
+                        <option value="">بدون ترجیح</option>
+                        <option value="modern">مدرن</option>
+                        <option value="classic">کلاسیک</option>
+                        <option value="minimal">مینیمال</option>
+                        <option value="industrial">صنعتی</option>
+                    </select>
+                </label>
+                <label>رنگ
+                    <select name="color">
+                        <option value="">بدون ترجیح</option>
+                        <option value="black">مشکی</option>
+                        <option value="white">سفید</option>
+                        <option value="gray">خاکستری</option>
+                        <option value="brown">قهوه‌ای</option>
+                        <option value="cream">کرم</option>
+                    </select>
+                </label>
+                <label>جنس روکش
+                    <select name="fabric_material">
+                        <option value="">بدون ترجیح</option>
+                        <option value="leather">چرم</option>
+                        <option value="linen">کتان</option>
+                    </select>
+                </label>
+                <label>جنس بدنه
+                    <select name="body_material">
+                        <option value="">بدون ترجیح</option>
+                        <option value="wood">چوب</option>
+                        <option value="aluminum">آلومینیوم</option>
+                    </select>
+                </label>
+            </div>
+            <p class="hint">بودجه دقیق یا بازهٔ بودجه را وارد کنید؛ هر دو را هم‌زمان وارد نکنید.</p>
+            <button type="submit">نمایش پیشنهادها</button>
+            <p id="form-error" class="error" role="alert" hidden></p>
+        </form>
+
+        <section class="results" aria-live="polite">
+            <div class="results-heading">
+                <div>
+                    <p class="eyebrow">نتیجه</p>
+                    <h2>نزدیک‌ترین محصولات</h2>
+                </div>
+                <span id="result-count"></span>
+            </div>
+            <div id="result-list" class="result-list">
+                <p class="empty-state">پس از تکمیل فرم، پیشنهادها در این قسمت نمایش داده می‌شوند.</p>
+            </div>
+        </section>
+    </section>
+</main>
+<script src="{% static 'recommendations/app.js' %}" defer></script>
+</body>
+</html>
