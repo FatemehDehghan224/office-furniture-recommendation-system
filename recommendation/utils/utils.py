@@ -1,7 +1,7 @@
 import json
 from typing import List
 from pathlib import Path
-from models.sofa_model import OfficeProductEntry
+from recommendation.models.sofa_model import OfficeProductEntry
 
 def products_to_json(products: List[OfficeProductEntry]) -> str:
     """

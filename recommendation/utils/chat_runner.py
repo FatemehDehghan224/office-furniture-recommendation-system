@@ -1,5 +1,5 @@
-from agents.input_collector_agent import input_collector, chat_history
-from agents.text_generator_agent import generate_recommendation_text
+from recommendation.agents.input_collector_agent import input_collector, chat_history, reset_chat_history
+from recommendation.agents.text_generator_agent import generate_recommendation_text
 
 chat_memory = []
 
@@ -8,6 +8,7 @@ def run_chat(reset_memory: bool = True):
 
     if reset_memory:
         chat_memory = []
+        reset_chat_history()
 
     collected = input_collector()
     if not collected:
@@ -63,8 +64,8 @@ def menu_loop():
                 for idx, h in enumerate(chat_history, 1):
                     print(f"{idx}. User: {h['user_input']}")
                     print(f"   LLM: {h['llm_response']}")
-                    if h["json_recommendations"]:
-                        print("   → Recommendations:", h["json_recommendations"])
+                    if h.get("recommendations"):
+                        print("   → Recommendations:", h["recommendations"])
         elif choice in ["4", "۴"]:
             print("👋 پایان برنامه. خداحافظ!")
             break

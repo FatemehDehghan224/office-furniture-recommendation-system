@@ -1,6 +1,6 @@
-from models.sofa_model import UserRequest, UserType, ProductType, Style, Color
-from utils.loader import load_products
-from recommend.recommender import recommend_products
+from recommendation.models.sofa_model import UserRequest, UserType, ProductType, Style, Color
+from recommendation.utils.loader import load_products
+from recommendation.recommend.recommender import recommend_products
 
 req = UserRequest(
     person=UserType.manager,

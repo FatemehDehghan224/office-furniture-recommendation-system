@@ -1,5 +1,13 @@
+from dataclasses import dataclass
 from typing import List
-from models.sofa_model import OfficeProductEntry, UserRequest
+from recommendation.models.sofa_model import OfficeProductEntry, UserRequest
+
+
+@dataclass(frozen=True)
+class ScoredProduct:
+    product: OfficeProductEntry
+    score: int
+    price_difference: float
 
 
 def score_product(product: OfficeProductEntry, request: UserRequest) -> int:
@@ -32,9 +40,9 @@ def score_product(product: OfficeProductEntry, request: UserRequest) -> int:
 
     return score
 
-def recommend_products(request: UserRequest, products: List[OfficeProductEntry], top_k: int = 5):
-    """Return top_k recommended products based on scoring and price proximity"""
-    scored = []
+def rank_products(request: UserRequest, products: List[OfficeProductEntry]) -> List[ScoredProduct]:
+    """Rank compatible products without changing the original scoring rules."""
+    scored: List[ScoredProduct] = []
 
     for p in products:
         s = score_product(p, request)
@@ -44,9 +52,13 @@ def recommend_products(request: UserRequest, products: List[OfficeProductEntry],
             else:
                 target_price = request.budget or p.budget
             price_diff = abs(p.budget - target_price)
-            scored.append((s, price_diff, p))
+            scored.append(ScoredProduct(product=p, score=s, price_difference=price_diff))
 
-    scored.sort(key=lambda x: (-x[0], x[1]))
+    scored.sort(key=lambda item: (-item.score, item.price_difference))
+    return scored
 
-    return [p for _, _, p in scored[:top_k]]
+
+def recommend_products(request: UserRequest, products: List[OfficeProductEntry], top_k: int = 5):
+    """Return top_k recommended products based on scoring and price proximity."""
+    return [item.product for item in rank_products(request, products)[:top_k]]
 

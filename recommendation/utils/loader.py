@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from rich.console import Console
 from rich.table import Table
-from models.sofa_model import OfficeProductEntry, UserType, ProductType, Style, Color, FabricMaterial, BodyMaterial
+from recommendation.models.sofa_model import OfficeProductEntry, UserType, ProductType, Style, Color, FabricMaterial, BodyMaterial
 
 def load_json_file(json_path: str):
     """
