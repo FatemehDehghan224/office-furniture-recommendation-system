@@ -4,22 +4,41 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>پیشنهاد مبلمان اداری</title>
+    <meta name="theme-color" content="#f6f3ed">
+    <title>مبلمان‌یار | انتخاب هوشمند مبلمان اداری</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'recommendations/app.css' %}">
 </head>
 <body>
 <main class="page-shell">
-    <header class="hero">
-        <p class="eyebrow">سیستم پیشنهاد هوشمند</p>
-        <h1>مبلمان مناسب فضای کاری خود را پیدا کنید</h1>
-        <p>نیازتان را مشخص کنید تا نزدیک‌ترین محصولات موجود، بر اساس امتیاز تطابق مرتب شوند.</p>
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="صفحهٔ نخست مبلمان‌یار"><span class="brand-symbol" aria-hidden="true">م</span> مبلمان‌یار</a>
+        <span class="catalog-status"><i aria-hidden="true"></i> پیشنهاد بر اساس کاتالوگ موجود</span>
     </header>
 
-    <section class="layout">
-        <form id="recommendation-form" class="panel" novalidate>
-            <h2>نیازهای شما</h2>
-            <div class="form-grid">
-                <label>برای چه کسی؟
+    <section class="intro" aria-labelledby="page-title">
+        <div>
+            <p class="kicker">انتخاب درست، بدون سردرگمی</p>
+            <h1 id="page-title">برای فضای کارتان<br><strong>انتخاب مطمئن</strong> بسازید.</h1>
+            <p class="intro-copy">نیازتان را در کمتر از یک دقیقه بگویید؛ نزدیک‌ترین گزینه‌های کاتالوگ را بر اساس میزان تطابق به شما نشان می‌دهیم.</p>
+        </div>
+        <div class="intro-note">
+            <span class="note-number" aria-hidden="true">۰۱</span>
+            <p>بودجه، کاربرد و سلیقهٔ شما را در کنار هم بررسی می‌کنیم.</p>
+        </div>
+    </section>
+
+    <section class="workspace" aria-label="سامانهٔ پیشنهاد مبلمان">
+        <form id="recommendation-form" class="form-card" novalidate>
+            <div class="card-heading">
+                <div><p class="kicker">شروع کنیم</p><h2>چه چیزی نیاز دارید؟</h2></div>
+                <span class="step">۱ از ۲</span>
+            </div>
+
+            <div class="form-grid primary-fields">
+                <label>کاربر محصول
                     <select name="person" required>
                         <option value="manager">مدیر</option>
                         <option value="employee">کارمند</option>
@@ -37,66 +56,46 @@
                     </select>
                 </label>
                 <label>ظرفیت
-                    <input name="number_of_person" type="number" min="1" value="1" required>
-                </label>
-                <label>بودجه دقیق (تومان)
-                    <input name="budget" type="number" min="0" placeholder="مثلاً 15000000">
-                </label>
-                <label>حداقل بودجه
-                    <input name="budget_min" type="number" min="0">
-                </label>
-                <label>حداکثر بودجه
-                    <input name="budget_max" type="number" min="0">
-                </label>
-                <label>سبک
-                    <select name="style">
-                        <option value="">بدون ترجیح</option>
-                        <option value="modern">مدرن</option>
-                        <option value="classic">کلاسیک</option>
-                        <option value="minimal">مینیمال</option>
-                        <option value="industrial">صنعتی</option>
-                    </select>
-                </label>
-                <label>رنگ
-                    <select name="color">
-                        <option value="">بدون ترجیح</option>
-                        <option value="black">مشکی</option>
-                        <option value="white">سفید</option>
-                        <option value="gray">خاکستری</option>
-                        <option value="brown">قهوه‌ای</option>
-                        <option value="cream">کرم</option>
-                    </select>
-                </label>
-                <label>جنس روکش
-                    <select name="fabric_material">
-                        <option value="">بدون ترجیح</option>
-                        <option value="leather">چرم</option>
-                        <option value="linen">کتان</option>
-                    </select>
-                </label>
-                <label>جنس بدنه
-                    <select name="body_material">
-                        <option value="">بدون ترجیح</option>
-                        <option value="wood">چوب</option>
-                        <option value="aluminum">آلومینیوم</option>
-                    </select>
+                    <span class="input-with-suffix"><input name="number_of_person" type="number" min="1" value="1" inputmode="numeric" required><small>نفر</small></span>
                 </label>
             </div>
-            <p class="hint">بودجه دقیق یا بازهٔ بودجه را وارد کنید؛ هر دو را هم‌زمان وارد نکنید.</p>
-            <button type="submit">نمایش پیشنهادها</button>
+
+            <fieldset class="budget-box">
+                <legend>بودجهٔ شما</legend>
+                <label>بودجهٔ تقریبی (تومان)
+                    <input id="exact-budget" name="budget" type="number" min="0" inputmode="numeric" placeholder="مثلاً 15000000">
+                </label>
+                <details id="budget-range">
+                    <summary>بودجه‌ام یک بازه است</summary>
+                    <div class="form-grid range-fields">
+                        <label>حداقل بودجه<input name="budget_min" type="number" min="0" inputmode="numeric" placeholder="مثلاً 10000000"></label>
+                        <label>حداکثر بودجه<input name="budget_max" type="number" min="0" inputmode="numeric" placeholder="مثلاً 20000000"></label>
+                    </div>
+                </details>
+                <p class="field-hint">اختیاری است؛ حتی بدون وارد کردن بودجه هم نزدیک‌ترین گزینه‌ها را می‌بینید.</p>
+            </fieldset>
+
+            <details class="preferences" id="preference-options">
+                <summary>ترجیحات ظاهری <span>اختیاری</span></summary>
+                <div class="form-grid preference-fields">
+                    <label>سبک<select name="style"><option value="">بدون ترجیح</option><option value="modern">مدرن</option><option value="classic">کلاسیک</option><option value="minimal">مینیمال</option><option value="industrial">صنعتی</option></select></label>
+                    <label>رنگ<select name="color"><option value="">بدون ترجیح</option><option value="black">مشکی</option><option value="white">سفید</option><option value="gray">خاکستری</option><option value="brown">قهوه‌ای</option><option value="cream">کرم</option></select></label>
+                    <label>جنس روکش<select name="fabric_material"><option value="">بدون ترجیح</option><option value="leather">چرم</option><option value="linen">کتان</option></select></label>
+                    <label>جنس بدنه<select name="body_material"><option value="">بدون ترجیح</option><option value="wood">چوب</option><option value="aluminum">آلومینیوم</option></select></label>
+                </div>
+            </details>
+
+            <button id="submit-button" type="submit"><span>نمایش پیشنهادهای من</span><b aria-hidden="true">←</b></button>
             <p id="form-error" class="error" role="alert" hidden></p>
         </form>
 
-        <section class="results" aria-live="polite">
-            <div class="results-heading">
-                <div>
-                    <p class="eyebrow">نتیجه</p>
-                    <h2>نزدیک‌ترین محصولات</h2>
-                </div>
-                <span id="result-count"></span>
+        <section class="results-card" aria-live="polite" aria-busy="false">
+            <div class="card-heading result-heading">
+                <div><p class="kicker">نتیجهٔ شخصی شما</p><h2>بهترین انتخاب‌ها</h2></div>
+                <span id="result-count" class="result-count"></span>
             </div>
             <div id="result-list" class="result-list">
-                <p class="empty-state">پس از تکمیل فرم، پیشنهادها در این قسمت نمایش داده می‌شوند.</p>
+                <div class="empty-state"><span aria-hidden="true" class="empty-mark">⌁</span><h3>انتخاب شما اینجا ظاهر می‌شود</h3><p>فرم را تکمیل کنید تا گزینه‌های مناسب را ببینید.</p></div>
             </div>
         </section>
     </section>

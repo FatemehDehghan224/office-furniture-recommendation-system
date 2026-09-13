@@ -92,7 +92,7 @@ class RecommendationApiTests(TestCase):
     def test_persian_web_interface_is_available(self):
         response = self.client.get(reverse("home"))
         self.assertEqual(200, response.status_code)
-        self.assertContains(response, "پیشنهاد مبلمان اداری")
+        self.assertContains(response, "انتخاب هوشمند مبلمان اداری")
 
     def test_openapi_schema_and_swagger_are_available(self):
         schema = self.client.get(reverse("api-schema"))
