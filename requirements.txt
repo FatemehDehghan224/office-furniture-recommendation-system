@@ -1,0 +1,10 @@
+openai>=2.11,<3
+pydantic>=2.12,<3
+python-dotenv>=1.0,<2
+rich>=14,<15
+Django>=5.2,<5.3
+djangorestframework>=3.16,<4
+psycopg[binary]>=3.3,<4
+gunicorn>=23,<24
+whitenoise>=6.9,<7
+drf-spectacular[sidecar]>=0.29,<1
