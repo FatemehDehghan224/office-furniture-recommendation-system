@@ -16,3 +16,14 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - run: python manage.py makemigrations --check --dry-run
       - run: python manage.py test recommendation.tests apps.recommendations
+      - run: python manage.py spectacular --file /tmp/openapi.yaml --validate
+      - run: python manage.py collectstatic --noinput
+        env:
+          DJANGO_DEBUG: "false"
+          DJANGO_SECRET_KEY: "ci-only-7kK2mN8pQ4rT9vX3zB6dF1hJ5lS0wE7cA2gM8uP4yR9"
+          DJANGO_ALLOWED_HOSTS: "localhost,testserver"
+      - run: python manage.py check --deploy
+        env:
+          DJANGO_DEBUG: "false"
+          DJANGO_SECRET_KEY: "ci-only-7kK2mN8pQ4rT9vX3zB6dF1hJ5lS0wE7cA2gM8uP4yR9"
+          DJANGO_ALLOWED_HOSTS: "localhost,testserver"

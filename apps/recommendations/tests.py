@@ -94,6 +94,11 @@ class RecommendationApiTests(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertContains(response, "انتخاب هوشمند مبلمان اداری")
 
+    def test_health_check_is_available(self):
+        response = self.client.get(reverse("health-check"))
+        self.assertEqual(200, response.status_code)
+        self.assertEqual({"status": "ok"}, response.json())
+
     def test_openapi_schema_and_swagger_are_available(self):
         schema = self.client.get(reverse("api-schema"))
         docs = self.client.get(reverse("api-docs"))
