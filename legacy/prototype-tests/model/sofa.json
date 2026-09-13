@@ -1,0 +1,337 @@
+{
+    "manager": {
+        "office desk": [
+            {
+                "id": 1,
+                "number_of_person": 1,
+                "budget": 30000000,
+                "style": "industrial",
+                "color": "gray",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 2,
+                "number_of_person": 1,
+                "budget": 5500000,
+                "style": "modern",
+                "color": "white",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 3,
+                "number_of_person": 2,
+                "budget": 10000000,
+                "style": "industrial",
+                "color": "black",
+                "fabric_material": "",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 4,
+                "number_of_person": 1,
+                "budget": 13000000,
+                "style": "minimal",
+                "color": "brown",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 5,
+                "number_of_person": 3,
+                "budget": 20000000,
+                "style": "modern",
+                "color": "cream",
+                "fabric_material": "",
+                "body_material": "wood"
+            }
+        ],
+        "office chair": [
+            {
+                "id": 6,
+                "number_of_person": 1,
+                "budget": 2000000,
+                "style": "classic",
+                "color": "white",
+                "fabric_material": "leather",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 7,
+                "number_of_person": 1,
+                "budget": 7000000,
+                "style": "industrial",
+                "color": "cream",
+                "fabric_material": "linen",
+                "body_material": "wood"
+            },
+            {
+                "id": 8,
+                "number_of_person": 1,
+                "budget": 10000000,
+                "style": "modern",
+                "color": "white",
+                "fabric_material": "linen",
+                "body_material": "wood"
+            },
+            {
+                "id": 9,
+                "number_of_person": 1,
+                "budget": 5000000,
+                "style": "minimal",
+                "color": "cream",
+                "fabric_material": "linen",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 10,
+                "number_of_person": 1,
+                "budget": 1500000,
+                "style": "classic",
+                "color": "white",
+                "fabric_material": "leather",
+                "body_material": "aluminum"
+            }
+        ],
+        "file cabinet": [
+            {
+                "id": 11,
+                "number_of_person": 0,
+                "budget": 4000000,
+                "style": "modern",
+                "color": "brown",
+                "fabric_material": "",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 12,
+                "number_of_person": 0,
+                "budget": 10000000,
+                "style": "classic",
+                "color": "black",
+                "fabric_material": "",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 13,
+                "number_of_person": 0,
+                "budget": 7000000,
+                "style": "minimal",
+                "color": "cream",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 14,
+                "number_of_person": 0,
+                "budget": 3000000,
+                "style": "industrial",
+                "color": "gray",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 15,
+                "number_of_person": 0,
+                "budget": 20000000,
+                "style": "modern",
+                "color": "white",
+                "fabric_material": "",
+                "body_material": "wood"
+            }
+        ]
+    },
+    "employee": {
+        "office desk": [
+            {
+                "id": 16,
+                "number_of_person": 1,
+                "budget": 1000000,
+                "style": "modern",
+                "color": "gray",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 17,
+                "number_of_person": 1,
+                "budget": 3000000,
+                "style": "industrial",
+                "color": "black",
+                "fabric_material": "",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 18,
+                "number_of_person": 1,
+                "budget": 6000000,
+                "style": "industrial",
+                "color": "brown",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 19,
+                "number_of_person": 2,
+                "budget": 10000000,
+                "style": "minimal",
+                "color": "brown",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 20,
+                "number_of_person": 3,
+                "budget": 20000000,
+                "style": "classic",
+                "color": "white",
+                "fabric_material": "",
+                "body_material": "wood"
+            }
+        ],
+        "office chair": [
+            {
+                "id": 21,
+                "number_of_person": 1,
+                "budget": 12000000,
+                "style": "classic",
+                "color": "cream",
+                "fabric_material": "leather",
+                "body_material": "wood"
+            },
+            {
+                "id": 22,
+                "number_of_person": 1,
+                "budget": 7000000,
+                "style": "modern",
+                "color": "gray",
+                "fabric_material": "leather",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 23,
+                "number_of_person": 1,
+                "budget": 2000000,
+                "style": "minimal",
+                "color": "black",
+                "fabric_material": "leather",
+                "body_material": "wood"
+            },
+            {
+                "id": 24,
+                "number_of_person": 1,
+                "budget": 5000000,
+                "style": "classic",
+                "color": "brown",
+                "fabric_material": "linen",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 25,
+                "number_of_person": 1,
+                "budget": 10000000,
+                "style": "industrial",
+                "color": "black",
+                "fabric_material": "leather",
+                "body_material": "aluminum"
+            }
+        ],
+        "reception counter": [
+            {
+                "id": 26,
+                "number_of_person": 1,
+                "budget": 20000000,
+                "style": "modern",
+                "color": "gray",
+                "fabric_material": "",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 27,
+                "number_of_person": 1,
+                "budget": 16000000,
+                "style": "minimal",
+                "color": "brown",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 28,
+                "number_of_person": 2,
+                "budget": 7000000,
+                "style": "modern",
+                "color": "black",
+                "fabric_material": "",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 29,
+                "number_of_person": 2,
+                "budget": 4000000,
+                "style": "classic",
+                "color": "cream",
+                "fabric_material": "",
+                "body_material": "wood"
+            },
+            {
+                "id": 30,
+                "number_of_person": 3,
+                "budget": 25000000,
+                "style": "industrial",
+                "color": "brown",
+                "fabric_material": "",
+                "body_material": "aluminum"
+            }
+        ]
+    },
+    "guest": {
+        "waiting area sofa": [
+            {
+                "id": 31,
+                "number_of_person": 4,
+                "budget": 2500000,
+                "style": "modern",
+                "color": "black",
+                "fabric_material": "leather",
+                "body_material": "wood"
+            },
+            {
+                "id": 32,
+                "number_of_person": 1,
+                "budget": 8000000,
+                "style": "minimal",
+                "color": "gray",
+                "fabric_material": "leather",
+                "body_material": "wood"
+            },
+            {
+                "id": 33,
+                "number_of_person": 4,
+                "budget": 30000000,
+                "style": "classic",
+                "color": "black",
+                "fabric_material": "linen",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 34,
+                "number_of_person": 1,
+                "budget": 5000000,
+                "style": "industrial",
+                "color": "cream",
+                "fabric_material": "linen",
+                "body_material": "aluminum"
+            },
+            {
+                "id": 35,
+                "number_of_person": 3,
+                "budget": 35000000,
+                "style": "industrial",
+                "color": "brown",
+                "fabric_material": "leather",
+                "body_material": "aluminum"
+            }
+        ]
+    }
+}
