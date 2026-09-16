@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
 
 from apps.products.models import Product
 from recommendation.utils.loader import load_json_file
@@ -19,6 +20,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         path = Path(options["path"])
+        if not path.is_absolute() and not path.exists():
+            path = Path(settings.BASE_DIR) / path
         if not path.exists():
             raise CommandError(f"Catalog does not exist: {path}")
 
