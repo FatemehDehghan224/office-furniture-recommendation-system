@@ -7,6 +7,16 @@ const resultsPanel = document.querySelector(".results-card");
 const exactBudget = document.querySelector("#exact-budget");
 const budgetRange = document.querySelector("#budget-range");
 const rangeInputs = [...budgetRange.querySelectorAll("input")];
+const chatForm = document.querySelector("#chat-form");
+const chatInput = document.querySelector("#chat-message");
+const chatHistoryBox = document.querySelector("#chat-history");
+const chatErrorBox = document.querySelector("#chat-error");
+const chatSubmitButton = document.querySelector("#chat-submit-button");
+const resetChatButton = document.querySelector("#reset-chat-button");
+const CHAT_STORAGE_KEY = "furniture-recommender-chat";
+
+let chatState = {};
+let chatHistory = [];
 
 const labels = {
     "office desk": "میز اداری", "office chair": "صندلی اداری", "file cabinet": "فایلینگ", bookshelf: "کتابخانه", "reception counter": "کانتر پذیرش", "waiting area sofa": "مبل انتظار",
@@ -53,6 +63,72 @@ function readableError(data) {
     if (data?.detail) return data.detail;
     const messages = Object.values(data || {}).flatMap((value) => Array.isArray(value) ? value : [value]).filter(Boolean);
     return messages.join(" ") || "دریافت پیشنهادها با خطا مواجه شد.";
+}
+
+function chatErrorMessage(response, data) {
+    if (data?.code === "chat_api_key_error") return "کلید API گفت‌وگو تنظیم نشده یا معتبر نیست. لطفاً تنظیمات سرویس را بررسی کنید.";
+    if (data?.code === "invalid_model_response" || response?.status === 502) return "پاسخ مدل قابل پردازش نبود؛ لطفاً دوباره تلاش کنید.";
+    return readableError(data) || "ارسال پیام با خطا مواجه شد.";
+}
+
+function loadChat() {
+    try {
+        const saved = JSON.parse(sessionStorage.getItem(CHAT_STORAGE_KEY) || "{}");
+        if (saved && typeof saved.state === "object" && Array.isArray(saved.history)) {
+            chatState = saved.state || {};
+            chatHistory = saved.history.filter(({ role, content }) => (role === "user" || role === "assistant") && typeof content === "string").slice(-20);
+        }
+    } catch (_) {
+        chatState = {};
+        chatHistory = [];
+    }
+}
+
+function saveChat() {
+    try {
+        sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ state: chatState, history: chatHistory.slice(-20) }));
+    } catch (_) {
+        // Conversation still works when browser storage is unavailable.
+    }
+}
+
+function renderChatHistory() {
+    if (!chatHistory.length) {
+        chatHistoryBox.innerHTML = '<div class="chat-message assistant-message"><span>مبلمان‌یار</span><p>سلام! برای شروع، بگویید برای چه کسی و چه نوع مبلمانی نیاز دارید.</p></div>';
+        return;
+    }
+    chatHistoryBox.innerHTML = chatHistory.map(({ role, content }) => `
+        <div class="chat-message ${role === "user" ? "user-message" : "assistant-message"}"><span>${role === "user" ? "شما" : "مبلمان‌یار"}</span><p>${escapeHtml(content)}</p></div>`).join("");
+    chatHistoryBox.scrollTop = chatHistoryBox.scrollHeight;
+}
+
+function syncFormWithChatState(state) {
+    if (!state || typeof state !== "object") return;
+    for (const field of ["person", "productType", "number_of_person", "style", "color", "fabric_material", "body_material"]) {
+        if (state[field] !== null && state[field] !== undefined && form.elements[field]) form.elements[field].value = state[field];
+    }
+    if (state.budget !== null && state.budget !== undefined) {
+        exactBudget.value = state.budget;
+        budgetRange.open = false;
+        rangeInputs.forEach((input) => { input.value = ""; });
+    } else if (state.budget_min !== null && state.budget_max !== null && state.budget_min !== undefined && state.budget_max !== undefined) {
+        exactBudget.value = "";
+        budgetRange.open = true;
+        rangeInputs[0].value = state.budget_min;
+        rangeInputs[1].value = state.budget_max;
+    }
+}
+
+function validateChatResponse(data) {
+    if (!data || typeof data !== "object" || !["collection", "analysis"].includes(data.type) || typeof data.message !== "string") {
+        throw new Error("پاسخ مدل قابل پردازش نبود؛ لطفاً دوباره تلاش کنید.");
+    }
+    if (data.type === "collection" && (!data.state || typeof data.state !== "object")) {
+        throw new Error("پاسخ مدل قابل پردازش نبود؛ لطفاً دوباره تلاش کنید.");
+    }
+    if (data.success && !Array.isArray(data.recommendations)) {
+        throw new Error("پاسخ مدل قابل پردازش نبود؛ لطفاً دوباره تلاش کنید.");
+    }
 }
 
 function budgetRangeError() {
@@ -103,3 +179,66 @@ form.addEventListener("submit", async (event) => {
         resultsPanel.setAttribute("aria-busy", "false");
     }
 });
+
+chatForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const message = chatInput.value.trim();
+    chatErrorBox.hidden = true;
+    if (!message) {
+        chatInput.focus();
+        return;
+    }
+
+    const previousHistory = chatHistory.slice(-20);
+    chatHistory.push({ role: "user", content: message });
+    renderChatHistory();
+    chatInput.value = "";
+    chatSubmitButton.disabled = true;
+    resultsPanel.setAttribute("aria-busy", "true");
+    setEmptyResult("در حال بررسی درخواست شما", "پاسخ مناسب و گزینه‌های کاتالوگ در حال آماده‌شدن هستند.", true);
+
+    try {
+        const response = await fetch("/api/v1/chat/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message, state: chatState, history: previousHistory }),
+        });
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(chatErrorMessage(response, data));
+        validateChatResponse(data);
+
+        if (data.type === "collection") chatState = data.state;
+        chatHistory.push({ role: "assistant", content: data.message || "پاسخ دریافت شد." });
+        chatHistory = chatHistory.slice(-20);
+        saveChat();
+        renderChatHistory();
+
+        if (data.type === "collection") syncFormWithChatState(data.state);
+        if (data.success) {
+            renderProducts(data.recommendations);
+            if (window.matchMedia("(max-width: 850px)").matches) resultsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+            setEmptyResult("گفت‌وگو را ادامه دهید", "چند اطلاعات دیگر لازم است؛ به پرسش مبلمان‌یار پاسخ دهید.");
+        }
+    } catch (error) {
+        chatErrorBox.textContent = error.message || "ارسال پیام با خطا مواجه شد.";
+        chatErrorBox.hidden = false;
+        setEmptyResult("دوباره تلاش کنید", "ارتباط با سرویس گفت‌وگو برقرار نشد.");
+    } finally {
+        chatSubmitButton.disabled = false;
+        resultsPanel.setAttribute("aria-busy", "false");
+    }
+});
+
+resetChatButton.addEventListener("click", () => {
+    chatState = {};
+    chatHistory = [];
+    try { sessionStorage.removeItem(CHAT_STORAGE_KEY); } catch (_) { /* Storage is optional. */ }
+    chatErrorBox.hidden = true;
+    renderChatHistory();
+    setEmptyResult("انتخاب شما اینجا ظاهر می‌شود", "فرم را تکمیل کنید یا گفت‌وگو را شروع کنید تا گزینه‌های مناسب را ببینید.");
+    chatInput.focus();
+});
+
+loadChat();
+renderChatHistory();

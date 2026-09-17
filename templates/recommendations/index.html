@@ -31,6 +31,23 @@
     </section>
 
     <section class="workspace" aria-label="سامانهٔ پیشنهاد مبلمان">
+        <div class="interaction-column">
+            <section class="chat-card" aria-labelledby="chat-title">
+                <div class="card-heading">
+                    <div><p class="kicker">راهنمای گفت‌وگویی</p><h2 id="chat-title">نیازتان را به زبان خودتان بگویید</h2></div>
+                    <button id="reset-chat-button" class="text-button" type="button">شروع دوباره</button>
+                </div>
+                <div id="chat-history" class="chat-history" aria-live="polite">
+                    <div class="chat-message assistant-message"><span>مبلمان‌یار</span><p>سلام! برای شروع، بگویید برای چه کسی و چه نوع مبلمانی نیاز دارید.</p></div>
+                </div>
+                <form id="chat-form" class="chat-form" novalidate>
+                    <label class="chat-input-label" for="chat-message">پیام شما</label>
+                    <textarea id="chat-message" name="message" rows="3" maxlength="2000" placeholder="مثلاً برای اتاق مدیر یک میز مدرن می‌خواهم" required></textarea>
+                    <button id="chat-submit-button" type="submit"><span>ارسال پیام</span><b aria-hidden="true">←</b></button>
+                </form>
+                <p id="chat-error" class="error" role="alert" hidden></p>
+            </section>
+
         <form id="recommendation-form" class="form-card" novalidate>
             <div class="card-heading">
                 <div><p class="kicker">شروع کنیم</p><h2>چه چیزی نیاز دارید؟</h2></div>
@@ -88,6 +105,7 @@
             <button id="submit-button" type="submit"><span>نمایش پیشنهادهای من</span><b aria-hidden="true">←</b></button>
             <p id="form-error" class="error" role="alert" hidden></p>
         </form>
+        </div>
 
         <section class="results-card" aria-live="polite" aria-busy="false">
             <div class="card-heading result-heading">

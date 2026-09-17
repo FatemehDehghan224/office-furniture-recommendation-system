@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema
+from openai import APIStatusError, AuthenticationError
 
 from apps.products.models import Product
 from apps.recommendations.models import RecommendationFeedback, RecommendationRequest
@@ -19,6 +20,7 @@ from apps.recommendations.serializers import (
 )
 from apps.recommendations.services import create_recommendation
 from apps.recommendations.chat_service import InvalidModelResponse, collect_chat_turn
+from recommendation.utils.llm_client import LLMConfigurationError
 
 
 logger = logging.getLogger(__name__)
@@ -130,10 +132,35 @@ class ChatView(APIView):
         serializer.is_valid(raise_exception=True)
         try:
             parsed = collect_chat_turn(**serializer.validated_data)
+        except (LLMConfigurationError, AuthenticationError):
+            return Response(
+                {
+                    "code": "chat_api_key_error",
+                    "detail": "کلید API گفت‌وگو تنظیم نشده یا معتبر نیست. لطفاً تنظیمات سرویس را بررسی کنید.",
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
         except InvalidModelResponse:
             return Response(
-                {"detail": "پاسخ مدل قابل پردازش نبود؛ لطفاً دوباره تلاش کنید."},
+                {
+                    "code": "invalid_model_response",
+                    "detail": "پاسخ مدل قابل پردازش نبود؛ لطفاً دوباره تلاش کنید.",
+                },
                 status=status.HTTP_502_BAD_GATEWAY,
+            )
+        except APIStatusError as error:
+            if error.status_code in (401, 403):
+                return Response(
+                    {
+                        "code": "chat_api_key_error",
+                        "detail": "کلید API گفت‌وگو تنظیم نشده یا معتبر نیست. لطفاً تنظیمات سرویس را بررسی کنید.",
+                    },
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE,
+                )
+            logger.exception("Conversational provider request failed")
+            return Response(
+                {"detail": "سرویس گفتگو موقتاً در دسترس نیست."},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
         except Exception:
             logger.exception("Conversational provider request failed")

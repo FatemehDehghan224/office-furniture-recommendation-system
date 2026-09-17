@@ -17,11 +17,15 @@ load_dotenv(PROJECT_ROOT / ".env")
 BASE_URL = "https://api.avalai.ir/v1"
 
 
+class LLMConfigurationError(ValueError):
+    """Raised when the conversational provider cannot be configured."""
+
+
 def ask_model(system_prompt: str, user_prompt: str, *, model: str, temperature: float) -> str:
     """Send one chat-completion request and return its text content."""
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        raise ValueError(
+        raise LLMConfigurationError(
             "OPENAI_API_KEY تنظیم نشده است. مقدار آن را در recommendation/.env قرار دهید."
         )
 

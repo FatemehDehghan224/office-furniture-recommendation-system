@@ -302,7 +302,7 @@ Products are protected from deletion while referenced by results (`PROTECT`); re
 
 ## Frontend behavior
 
-The page in `templates/recommendations/index.html` is a Persian, responsive interface using the static assets in `static/recommendations/`. JavaScript builds the JSON payload, prevents conflicting budget modes, validates incomplete or reversed ranges before submission, displays loading and error states, and renders escaped product data returned by the API. The normal form does not require an LLM key.
+The page in `templates/recommendations/index.html` is a Persian, responsive interface using the static assets in `static/recommendations/`. Alongside the existing form, it offers a conversational flow that sends the current message, structured state, and up to 20 recent turns to `/api/v1/chat/`. The browser retains that state and history for the current session, fills the form from collected requirements, and renders the same deterministic recommendations as soon as the conversation is complete. The form remains available without an LLM key. The chat surface shows distinct Persian messages for an unavailable/invalid API key and an invalid model response.
 
 ## Docker Compose
 
